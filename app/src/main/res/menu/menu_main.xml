@@ -1,0 +1,20 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/mainMenuGotoSignIn"
+        android:title="Gehe zu SignIn" />
+
+    <item
+        android:id="@+id/mainMenuGotoManageAccount"
+        android:title="Gehe zu ManageAccount" />
+
+    <item
+        android:id="@+id/mainMenuGotoCreateAccount"
+        android:title="Gehe zu CreateAccount" />
+
+    <item
+        android:id="@+id/mainMenuGotoPost"
+        android:title="Gehe zu Post" />
+
+
+</menu>
