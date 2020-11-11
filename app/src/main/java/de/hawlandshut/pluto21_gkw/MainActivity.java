@@ -1,9 +1,5 @@
 package de.hawlandshut.pluto21_gkw;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,7 +11,10 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
 
@@ -24,7 +23,7 @@ import de.hawlandshut.pluto21_gkw.test.PostTestData;
 
 
 public class MainActivity extends AppCompatActivity {
-    private static final String TAG ="xx MainActivity";
+    private static final String TAG = "xx MainActivity";
 
     // The place to store posts, after received from server
     ArrayList<Post> mPostList = new ArrayList<Post>();
@@ -52,30 +51,31 @@ public class MainActivity extends AppCompatActivity {
                 android.R.layout.simple_list_item_2,
                 android.R.id.text1,
                 mPostList
-        ){
+        ) {
             @NonNull
             @Override
             public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-                Log.d(TAG, "getView called mit Position = "+position);
+
                 // Hole eine leere simple_list_item_2 view
                 View view = super.getView(position, convertView, parent);
 
                 // Erzeuge zwei TextViews für die beiden Zeilen
                 TextView text1, text2;
-                text1 = view.findViewById( android.R.id.text1);
-                text2 = view.findViewById( android.R.id.text2);
+                text1 = view.findViewById(android.R.id.text1);
+                text2 = view.findViewById(android.R.id.text2);
 
-                text1.setText("Zeile 1");
-                text2.setText("Zeile 2");
+                Post p = getItem(position);
+                text1.setText(p.title);
+                text2.setText(p.body);
 
                 return view;
             }
         };
 
         // Initialisieren der Listview...
-        mListView = (ListView) findViewById( R.id.listViewMessages);
+        mListView = (ListView) findViewById(R.id.listViewMessages);
         //... und mit dem Adapter verbinden
-        mListView.setAdapter( mAdapter );
+        mListView.setAdapter(mAdapter);
 
     }
 
@@ -97,36 +97,70 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         // TODO: Clean up!
         Intent intent;
-        switch( item.getItemId()) {
+        switch (item.getItemId()) {
 
-            case R.id.mainMenuGotoSignIn:
-                intent = new Intent(getApplication(),
-                        SignInActivity.class);
-                startActivity(intent);
+            case R.id.mainMenuTestAuthState:
+                doTestAuthState();
                 return true;
 
-            case R.id.mainMenuGotoCreateAccount:
-                intent = new Intent(getApplication(),
-                        CreateAccountActivity.class);
-                startActivity(intent);
+            case R.id.mainMenuCreateTestUser:
+                doCreateTestUser();
                 return true;
 
-            case R.id.mainMenuGotoManageAccount:
-                intent = new Intent(getApplication(),
-                        ManageAccountActivity.class);
-                startActivity(intent);
+            case R.id.mainMenuSignIn:
+                doSignIn();
                 return true;
 
-            case R.id.mainMenuGotoPost:
-                intent = new Intent(getApplication(),
-                        PostActivity.class);
-                startActivity(intent);
+            case R.id.mainMenuSignOut:
+                doSignOut();
                 return true;
+
+            case R.id.mainMenuDeleteUser:
+                doDeleteUser();
+                return true;
+
+            case R.id.mainMenuSendResetPasswordMail:
+                doSendResetPasswordMail();
+                return true;
+
+            case R.id.mainMenuSendActivationMail:
+                doSendActivationMail();
+                return true;
+
 
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
+
+    private void doSendActivationMail() {
+
+    }
+
+    private void doSendResetPasswordMail() {
+
+    }
+
+    private void doDeleteUser() {
+
+    }
+
+    private void doSignOut() {
+
+    }
+
+    private void doSignIn() {
+
+    }
+
+    private void doCreateTestUser() {
+
+    }
+
+    private void doTestAuthState() {
+
+    }
+
     // TODO:  Methoden ab hier brauchen wir nicht; löschen!
     @Override
     protected void onResume() {
