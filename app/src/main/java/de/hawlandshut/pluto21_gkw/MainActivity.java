@@ -38,31 +38,38 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch ( item.getItemId()){
+        // TODO: Clean up!
+        Intent intent;
+        switch( item.getItemId()) {
+
+            case R.id.mainMenuGotoSignIn:
+                intent = new Intent(getApplication(),
+                        SignInActivity.class);
+                startActivity(intent);
+                return true;
 
             case R.id.mainMenuGotoCreateAccount:
-                Toast.makeText(getApplicationContext(), "Pressed CreateAccount ", Toast.LENGTH_LONG).show();
+                intent = new Intent(getApplication(),
+                        CreateAccountActivity.class);
+                startActivity(intent);
                 return true;
 
             case R.id.mainMenuGotoManageAccount:
-                Toast.makeText(getApplicationContext(), "Pressed ManageAccount ", Toast.LENGTH_LONG).show();
+                intent = new Intent(getApplication(),
+                        ManageAccountActivity.class);
+                startActivity(intent);
                 return true;
 
             case R.id.mainMenuGotoPost:
-                Toast.makeText(getApplicationContext(), "Pressed Post ", Toast.LENGTH_LONG).show();
-                return true;
-
-            case R.id.mainMenuGotoSignIn:
-                Intent intent = new Intent(getApplication(), SignInActivity.class);
+                intent = new Intent(getApplication(),
+                        PostActivity.class);
                 startActivity(intent);
                 return true;
 
             default:
                 return super.onOptionsItemSelected(item);
         }
-
     }
-
     // TODO:  Methoden ab hier brauchen wir nicht; löschen!
     @Override
     protected void onResume() {
