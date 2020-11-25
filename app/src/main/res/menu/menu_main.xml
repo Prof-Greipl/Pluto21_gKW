@@ -1,34 +1,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/mainMenuTestAuthState"
-        android:title="Test Auth Stat" />
-
-    <item
-        android:id="@+id/mainMenuCreateTestUser"
-        android:title="Create Testuser" />
-
-    <item
-        android:id="@+id/mainMenuSignIn"
-        android:title="Sign in" />
-
-    <item
-        android:id="@+id/mainMenuSignOut"
-        android:title="Sign out" />
-
-
-    <item
-        android:id="@+id/mainMenuDeleteUser"
-        android:title="Delete User" />
-
-
-    <item
-        android:id="@+id/mainMenuSendResetPasswordMail"
-        android:title="Send reset password mail" />
-
-
-    <item
-        android:id="@+id/mainMenuSendActivationMail"
-        android:title="Send Activation Mail" />
+        android:id="@+id/mainMenuManageAccount"
+        android:title="ManageAccount" />
 
 </menu>

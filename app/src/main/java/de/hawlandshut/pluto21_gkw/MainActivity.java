@@ -11,10 +11,17 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 
@@ -24,6 +31,11 @@ import de.hawlandshut.pluto21_gkw.test.PostTestData;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "xx MainActivity";
+
+    // TODO: Only for testing - remove later
+    private static final String TEST_MAIL = "dietergreipl@gmail.com";
+    private static final String TEST_PASSWORD = "123456";
+
 
     // The place to store posts, after received from server
     ArrayList<Post> mPostList = new ArrayList<Post>();
@@ -82,6 +94,18 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+
+        // Ist ein User angemeldet.
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if( user == null){
+            Log.d(TAG, "Kein user, also ab zu Sign In... ");
+            Intent intent = new Intent( getApplicationContext(), SignInActivity.class);
+            startActivity( intent );
+        } else {
+            ;
+        }
+
+
         // TODO: Remove later
         Log.d(TAG, "in onStart");
     }
@@ -99,67 +123,18 @@ public class MainActivity extends AppCompatActivity {
         Intent intent;
         switch (item.getItemId()) {
 
-            case R.id.mainMenuTestAuthState:
-                doTestAuthState();
+            case R.id.mainMenuManageAccount:
+                // TODO: Check auf user == null?
+                intent = new Intent( getApplicationContext(), ManageAccountActivity.class);
+                startActivity( intent );
                 return true;
-
-            case R.id.mainMenuCreateTestUser:
-                doCreateTestUser();
-                return true;
-
-            case R.id.mainMenuSignIn:
-                doSignIn();
-                return true;
-
-            case R.id.mainMenuSignOut:
-                doSignOut();
-                return true;
-
-            case R.id.mainMenuDeleteUser:
-                doDeleteUser();
-                return true;
-
-            case R.id.mainMenuSendResetPasswordMail:
-                doSendResetPasswordMail();
-                return true;
-
-            case R.id.mainMenuSendActivationMail:
-                doSendActivationMail();
-                return true;
-
 
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
-    private void doSendActivationMail() {
 
-    }
-
-    private void doSendResetPasswordMail() {
-
-    }
-
-    private void doDeleteUser() {
-
-    }
-
-    private void doSignOut() {
-
-    }
-
-    private void doSignIn() {
-
-    }
-
-    private void doCreateTestUser() {
-
-    }
-
-    private void doTestAuthState() {
-
-    }
 
     // TODO:  Methoden ab hier brauchen wir nicht; löschen!
     @Override
