@@ -62,6 +62,18 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
         String password2 = mEditTextPassword2.getText().toString();
 
         // Übung: Identität der beiden Passwörter prüfen.
+        // Do some checks
+        if (email.isEmpty() || password2.isEmpty() || password1.isEmpty()) {
+            Toast.makeText(CreateAccountActivity.this, "Empty Email or passwords not allowed.",
+                    Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (!password1.equals(password2)) {
+            Toast.makeText(CreateAccountActivity.this, "Passwords do not match!",
+                    Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         // https://firebase.google.com/docs/auth/android/manage-users#create_a_user
         FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password1)

@@ -36,9 +36,23 @@ public class ManageAccountActivity extends AppCompatActivity implements View.OnC
         ((Button) findViewById( R.id.manageAccountButtonSendActivationMail)).setOnClickListener( this );
         ((Button) findViewById( R.id.manageAccountButtonDeleteAccount)).setOnClickListener( this );
 
+
         //TODO: Nur zum Testen - später löschen!
         mEmail.setText("dietergreipl@gmail.com");
         mPassword.setText("123456");
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        // Disable Send Activation, if already verifiednot yet enabled
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user == null) {
+            return; // This should never happen
+        }
+        ((Button) findViewById( R.id.manageAccountButtonSendActivationMail)).setEnabled( ! user.isEmailVerified() );
+
     }
 
     @Override
