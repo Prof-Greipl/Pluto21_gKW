@@ -4,5 +4,8 @@
     android:id="@+id/mainMenuManageAccount"
     android:title="ManageAccount" />
 
+    <item
+        android:id="@+id/mainMenuTestDatabase"
+        android:title="Test Database" />
 
 </menu>

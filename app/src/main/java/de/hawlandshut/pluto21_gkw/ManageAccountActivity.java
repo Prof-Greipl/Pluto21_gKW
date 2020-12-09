@@ -51,7 +51,15 @@ public class ManageAccountActivity extends AppCompatActivity implements View.OnC
         if (user == null) {
             return; // This should never happen
         }
-        ((Button) findViewById( R.id.manageAccountButtonSendActivationMail)).setEnabled( ! user.isEmailVerified() );
+
+        if (user.isEmailVerified()) {
+            ((Button) findViewById(R.id.manageAccountButtonSendActivationMail)).setVisibility(View.GONE);
+        }
+
+        // Display status lines
+        mTechnicalId.setText("UID : "+user.getUid());
+        mAccountState.setText("Verified : "+ user.isEmailVerified() );
+        mEmail.setText("E-Mail : " + user.getEmail());
 
     }
 

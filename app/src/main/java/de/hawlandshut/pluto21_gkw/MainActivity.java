@@ -23,6 +23,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
@@ -128,6 +129,10 @@ public class MainActivity extends AppCompatActivity {
                 // TODO: Check auf user == null?
                 intent = new Intent( getApplicationContext(), ManageAccountActivity.class);
                 startActivity( intent );
+                return true;
+
+            case R.id.mainMenuTestDatabase:
+                FirebaseDatabase.getInstance().getReference("App/Version").setValue("V1.0");
                 return true;
 
             default:
