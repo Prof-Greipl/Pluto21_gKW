@@ -1,11 +1,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-    android:id="@+id/mainMenuManageAccount"
-    android:title="ManageAccount" />
+        android:id="@+id/mainMenuPost"
+        android:title="Post" />
 
     <item
-        android:id="@+id/mainMenuTestDatabase"
-        android:title="Test Database" />
+        android:id="@+id/mainMenuManageAccount"
+        android:title="ManageAccount" />
+
 
 </menu>

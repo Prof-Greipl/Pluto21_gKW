@@ -1,7 +1,6 @@
 package de.hawlandshut.pluto21_gkw;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -12,23 +11,22 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 
 import java.util.ArrayList;
 
 import de.hawlandshut.pluto21_gkw.model.Post;
-import de.hawlandshut.pluto21_gkw.test.PostTestData;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -48,6 +46,11 @@ public class MainActivity extends AppCompatActivity {
     // UI-Element deklarieren
     ListView mListView;
 
+    // Query und ChildEventlistener mit running Indikator deklarieren
+    Query mQuery;
+    ChildEventListener mChildEventListener;
+    boolean mListenerIsRunning = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // TODO: Später ändern, nur zum Test
@@ -55,9 +58,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // TODO: For testing only, remove later;
-        PostTestData.createTestData();
-        mPostList = (ArrayList<Post>) PostTestData.postTestList;
+
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
 
         // Initialisieren des Apdapter
         mAdapter = new ArrayAdapter<Post>(
@@ -78,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
                 text1 = view.findViewById(android.R.id.text1);
                 text2 = view.findViewById(android.R.id.text2);
 
-                Post p = getItem(position);
+                Post p = getItem(getCount() - 1 - position);
                 text1.setText(p.title);
                 text2.setText(p.body);
 
@@ -91,6 +93,9 @@ public class MainActivity extends AppCompatActivity {
         //... und mit dem Adapter verbinden
         mListView.setAdapter(mAdapter);
 
+        // Query  und ChildEvenlistener initialisieren
+        mQuery = FirebaseDatabase.getInstance().getReference().child("Posts/").limitToLast(3);
+        mChildEventListener = getChildEventListener();
     }
 
     @Override
@@ -100,16 +105,69 @@ public class MainActivity extends AppCompatActivity {
         // Ist ein User angemeldet.
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if( user == null){
-            Log.d(TAG, "Kein user, also ab zu Sign In... ");
+            resetApp();
             Intent intent = new Intent( getApplicationContext(), SignInActivity.class);
             startActivity( intent );
         } else {
-            ;
+            Log.d(TAG,"Added CEL");
+             if( !mListenerIsRunning ) {
+                 mPostList.clear();
+                 mQuery.addChildEventListener(mChildEventListener);
+                 mListenerIsRunning = true;
+                 mAdapter.notifyDataSetChanged();
+             }
         }
-
 
         // TODO: Remove later
         Log.d(TAG, "in onStart");
+    }
+
+    private void resetApp(){
+        mPostList.clear();
+        mAdapter.notifyDataSetChanged();
+        if (mListenerIsRunning) {
+            mQuery.removeEventListener(mChildEventListener);
+            mListenerIsRunning = false;
+        }
+    }
+
+    private ChildEventListener getChildEventListener(){
+        return new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                Log.d(TAG, "onChildAdded  Key = "+dataSnapshot.getKey());
+                Post post = Post.getPostFromSnapShot( dataSnapshot );
+                mPostList.add( post );
+                mAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+               // Wird nicht benötigt
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+                String key = dataSnapshot.getKey();
+                for (int i = 0; i < mPostList.size(); i++){
+                    if (key.equals( mPostList.get(i).firebaseKey)){
+                        mPostList.remove(i);
+                        break;
+                    }
+                }
+                mAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                Log.d(TAG, "onChildMoved  Key = "+dataSnapshot.getKey());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.d(TAG, "onCancelled  ");
+            }
+        };
     }
 
     @Override
@@ -131,8 +189,9 @@ public class MainActivity extends AppCompatActivity {
                 startActivity( intent );
                 return true;
 
-            case R.id.mainMenuTestDatabase:
-                FirebaseDatabase.getInstance().getReference("App/Version").setValue("V1.0");
+            case R.id.mainMenuPost:
+                intent = new Intent( getApplicationContext(), PostActivity.class);
+                startActivity( intent );
                 return true;
 
             default:
