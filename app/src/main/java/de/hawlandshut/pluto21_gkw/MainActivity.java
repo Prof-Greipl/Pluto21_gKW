@@ -58,8 +58,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
-        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+      //  FirebaseDatabase.getInstance().setPersistenceEnabled(true);
 
         // Initialisieren des Apdapter
         mAdapter = new ArrayAdapter<Post>(
@@ -193,6 +192,10 @@ public class MainActivity extends AppCompatActivity {
                 intent = new Intent( getApplicationContext(), PostActivity.class);
                 startActivity( intent );
                 return true;
+
+            case R.id.mainMenuCrash:
+                throw new RuntimeException("Test Crash");
+
 
             default:
                 return super.onOptionsItemSelected(item);

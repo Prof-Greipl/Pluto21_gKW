@@ -8,5 +8,9 @@
         android:id="@+id/mainMenuManageAccount"
         android:title="ManageAccount" />
 
+    <item
+        android:id="@+id/mainMenuCrash"
+        android:title="Crash" />
+
 
 </menu>
